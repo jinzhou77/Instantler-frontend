@@ -1,0 +1,42 @@
+.reservationSys{
+  width:95%;
+  margin:auto;
+}
+.restWaitList{
+  width:90%;
+  margin:auto;
+}
+.react-calendar{
+  margin-top:10px;
+}
+.reservation{
+  display:flex;
+  justify-content: space-between;
+}
+.reservation-selectDate{
+  width:70%;
+}
+.reservation-selectDate .item{
+  padding-left:0!important;
+  padding-bottom:0!important;
+}
+ .reservation-dateButtons{
+  width:50%;
+
+}
+.reservation-dateButtons .buttonRows{
+  display:flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  margin-top:5px;
+}
+.reservation-dateButtons button{
+  width:15%;
+}
+.reservationUsers .contenet{
+  width:50%!important;
+}
+.reservationUsers{
+  display:flex !important;
+  justify-content: space-between !important;
+}

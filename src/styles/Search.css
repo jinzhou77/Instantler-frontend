@@ -1,0 +1,53 @@
+.search-homepage h1{
+  text-align: center;
+  color:#dc3545;
+}
+.search-content .container{
+  padding-top:200px;
+}
+.search-content .container .row{
+  display:flex;
+  justify-content: space-around;
+}
+.search-content .btn-group div{
+  display:flex;
+  align-items: center;
+}
+.search-content{
+  height:570px;
+  background-size:cover;
+  background-position-y:center;
+  background-position-x:50%;
+}
+.search-content button a{
+  color:white!important;
+}
+.userHome .search-content{
+  background-image:url("../assets/background.jpg");
+}
+.restHome .search-content{
+  background-image:url("../assets/restHome.jpg");
+}
+.popular{
+  display:flex;
+  justify-content: space-around;
+  margin-bottom:10px;
+}
+.search-page{
+  width:80%;
+  margin:auto;
+  padding-top:20px;
+}
+.popular img {
+  height:200px !important;
+}
+.popular .card{
+  margin-top:0;
+  margin-bottom:0;
+}
+.search-page img{
+  height:150px !important;
+}
+.filterbar{
+  background-color:#f5f5f5;
+}

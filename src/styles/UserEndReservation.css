@@ -1,0 +1,28 @@
+
+.UserEndReservationInfo, .UserEndReservationSelectTime{
+  width:90%;
+  margin:auto;
+  margin-top:20px;
+}
+.UserEndReservationInfo .items{
+  width:65% !important;
+  margin-bottom:0;
+}
+.UserEndReservationInfo h1{
+  font-size:34px!important;
+}
+.UserEndReservationInfo .message{
+  margin-right:0!important;
+}
+.UserEndReservationInfo{
+  display:flex;
+  justify-content: space-between;
+}
+.UserEndReservationInfo .react-calendar{
+  margin-top:0;
+}
+.UserEndReservationSelectTime .buttonRows{
+  display:flex;
+  justify-content: space-between;
+  margin-bottom:10px;
+}

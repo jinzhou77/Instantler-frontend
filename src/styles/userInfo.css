@@ -1,0 +1,22 @@
+.accountInfo{
+  width:90%;
+  margin:auto;
+  margin-top:10px;
+}
+.upcomingEvent .item{
+  display:flex !important;
+  justify-content: space-between!important;
+}
+.upcomingEvent .content{
+  width:50% !important;
+}
+.passEvent .content{
+  width:90%!important;
+}
+.passEvent .content2{
+  width:7%!important;
+}
+.passEvent .item{
+  display:flex !important;
+  justify-content: space-between !important;
+}

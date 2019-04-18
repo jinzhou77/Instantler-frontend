@@ -1,0 +1,34 @@
+*{
+  padding:0;
+  margin:0;
+}
+body{
+    overflow-x:scroll;
+}
+.auth{
+  padding-top:10px;
+  width:95%;
+  display:flex;
+  justify-content: flex-end;
+}
+.recommand{
+  margin-bottom:20px;
+}
+.recommand h1{
+  text-align: center;
+  margin-top:20px;
+  color:#dc3545;
+}
+.recommand_list{
+  display:flex;
+  justify-content: space-around;
+}
+
+.recommand_list img{
+  height:200px !important;
+}
+.recommand_list .card{
+  margin-top:0;
+  margin-bottom:0;
+
+}

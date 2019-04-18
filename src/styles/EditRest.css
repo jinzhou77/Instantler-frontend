@@ -1,0 +1,92 @@
+.editRest nav, .restHome .instantlerNav nav, .restaurantAccount nav{
+  background-color: #282828;
+}
+.editRest nav, .restaurantAccount nav, .commonAccount nav, .userHome nav{
+  color:white !important;
+  font-weight:bold;
+  font-size:18px;
+}
+.userName img{
+  margin-right:10px!important;
+}
+.editRest .sidebar{
+  color:white !important;
+}
+.userName .dropdown.icon{
+  color:white !important;
+}
+.commonAccount nav,.editRest nav, .restaurantAccount nav, .userHome nav, .UserEndReservation nav, .restHome nav{
+  padding-left:5%;
+  padding-right:5%;
+  padding-top:20px;
+  padding-bottom:20px;
+}
+.updateRestInfo{
+  margin:auto;
+}
+.userHome nav, .commonAccount nav, .UserEndReservation nav{
+  background-color:#dc3545 !important;
+}
+/*nav{
+  color:white!important;
+  height:100px;
+  display:flex;
+  align-items: center;
+}*/
+.navbar-brand, .userHome .navbar-brand,.instantlerNav .navbar-brand ,.editRest nav .navbar-brand, .restHome .instantlerNav .navbar-brand, .restaurantAccount .navbar-brand{
+  color:white !important;
+  font-size:23px;
+}
+
+
+.editRest .justify-content-end{
+  margin-right:50px!important;
+}
+.editRest h3{
+  margin:0;
+}
+.editRest nav .restaurantAccount{
+  width:100%;
+  display:flex;
+  justify-content: flex-end;
+  margin-right:20px;
+}
+.pushable{
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+}
+
+.pusher{
+  min-height:560px!important;
+}
+.ui.basic.segment{
+  min-height:100%;
+}
+
+.editRest .item{
+  padding:30px !important;
+}
+.editButtons{
+  margin-top:20px;
+  display:flex;
+  justify-content: space-between;
+}
+.editButton{
+  width:200px;
+  height:200px;
+  font-size:24px !important;
+}
+
+
+.tableList .content{
+  width:80%;
+}
+.tableList button{
+  width:20%;
+  margin:0;
+}
+.tableList .item{
+  display:flex !important;
+  justify-content: space-between !important;
+}
