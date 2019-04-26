@@ -15,7 +15,7 @@
 .userName .dropdown.icon{
   color:white !important;
 }
-.commonAccount nav,.editRest nav, .restaurantAccount nav, .userHome nav, .UserEndReservation nav, .restHome nav{
+.search div nav, .commonAccount nav,.editRest nav, .restaurantAccount nav, .userHome nav, .UserEndReservation nav, .restHome nav{
   padding-left:5%;
   padding-right:5%;
   padding-top:20px;

@@ -51,3 +51,8 @@
 .filterbar{
   background-color:#f5f5f5;
 }
+.filterbar-center{
+  display:flex;
+  justify-content: space-around;
+  padding:20px; 
+}
