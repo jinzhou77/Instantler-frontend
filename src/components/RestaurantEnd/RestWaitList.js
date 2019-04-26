@@ -4,6 +4,8 @@ import axios from 'axios'
 
 import {Button, Message, Segment, Header, Label, Rating,Item, List} from 'semantic-ui-react'
 import '../../styles/waitList.css'
+import EditRest from './EditRest.js'
+
 class RestWaitList extends Component{
   constructor(props){
     super(props);
@@ -128,49 +130,51 @@ class RestWaitList extends Component{
     const {currentWaitingUsers, restaurant} = this.state
 
     return (
-      <div className="restWaitList">
-        <h1>Restaurant WaitList Information</h1>
-        <div className="waitListHeader">
-          <div className="restWSnum">
-            <Item.Group>
-              <Item>
-                <Item.Image size="large" src={restaurant.photo_url} />
-                <Item.Content>
-                  <Item.Header>{restaurant.name}</Item.Header>
-                  <Item.Meta>
-                    <Rating maxRating={5} rating={parseInt(restaurant.rating)} icon='star' size='huge' disabled/> <br/>
-                  </Item.Meta>
-                  <Item.Description>
-                    <b>Address: {restaurant.address}</b> <br/>
-                    <b>City: {restaurant.city}</b> <br />
-                    <b>State: {restaurant.state}</b><br />
-                    <b>Price Range: {restaurant.price}</b><br />
-                    <Message compact negative>
-                      <Message.Content>
-                        Current Waiting Number:<b>{this.state.waitingNumber}</b>
-                      </Message.Content>
-                    </Message> <br />
-                    <Message compact positive>
-                      <Message.Content>
-                        Current Serving Number:<b>{this.state.servedNumber}</b>
-                      </Message.Content>
-                    </Message>
-                  </Item.Description>
-                </Item.Content>
-              </Item>
-            </Item.Group>
+      <EditRest page={
+        <div className="restWaitList">
+          <h1>Restaurant WaitList Information</h1>
+          <div className="waitListHeader">
+            <div className="restWSnum">
+              <Item.Group>
+                <Item>
+                  <Item.Image size="large" src={restaurant.photo_url} />
+                  <Item.Content>
+                    <Item.Header>{restaurant.name}</Item.Header>
+                    <Item.Meta>
+                      <Rating maxRating={5} rating={parseInt(restaurant.rating)} icon='star' size='huge' disabled/> <br/>
+                    </Item.Meta>
+                    <Item.Description>
+                      <b>Address: {restaurant.address}</b> <br/>
+                      <b>City: {restaurant.city}</b> <br />
+                      <b>State: {restaurant.state}</b><br />
+                      <b>Price Range: {restaurant.price}</b><br />
+                      <Message compact negative>
+                        <Message.Content>
+                          Current Waiting Number:<b>{this.state.waitingNumber}</b>
+                        </Message.Content>
+                      </Message> <br />
+                      <Message compact positive>
+                        <Message.Content>
+                          Current Serving Number:<b>{this.state.servedNumber}</b>
+                        </Message.Content>
+                      </Message>
+                    </Item.Description>
+                  </Item.Content>
+                </Item>
+              </Item.Group>
 
-          </div>
-          <div className="resList">
-            <h1>Wait List</h1>
-            <List divided celled>
-              {
-                currentWaitingUsers.map((i)=>{return i})
-              }
-            </List>
+            </div>
+            <div className="resList">
+              <h1>Wait List</h1>
+              <List divided celled>
+                {
+                  currentWaitingUsers.map((i)=>{return i})
+                }
+              </List>
+            </div>
           </div>
         </div>
-      </div>
+      } />
     )
   }
 }

@@ -6,7 +6,7 @@ import {Icon, Button} from 'semantic-ui-react'
 import Search from '../Search.js'
 import InstantlerNav from '../InstantlerNav.js'
 import EditRest from './EditRest.js'
-
+import RestaurantHomePage from './RestaurantHomePage.js'
 class RestHome extends Component {
   constructor(props){
     super(props);
@@ -21,7 +21,7 @@ class RestHome extends Component {
     return(
       <div className="restHome">
         {login?
-          <EditRest />
+          <RestaurantHomePage />
         :
           <>
             <InstantlerNav  usertype={restaurant}/>

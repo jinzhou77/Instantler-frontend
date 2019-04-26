@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import {Navbar, Modal, Form,Row,Col} from 'react-bootstrap'
-import {Icon,Button} from 'semantic-ui-react'
+import {Icon,Button, Message} from 'semantic-ui-react'
 import axios from 'axios'
 
 
@@ -21,7 +21,7 @@ class Login extends Component {
         is_common: is_common,
         is_restaurant: is_restaurant,
       },
-      validate:false
+      validate:true
     }
     this.handleCommonUserName=this.handleCommonUserName.bind(this);
     this.handleCommonPassword=this.handleCommonPassword.bind(this);
@@ -85,6 +85,11 @@ class Login extends Component {
                 Invalid username and password!
               </Form.Control.Feedback>
             </Form>
+            <Message error hidden={this.state.validate}>
+              <Message.Header>
+                The username and password is not match to our database.
+              </Message.Header>
+            </Message>
           </Modal.Body>
           <Modal.Footer>
             <Button inverted color='red' onClick={this.handle_login}>Sign In</Button>
@@ -110,7 +115,9 @@ class Signup extends Component {
         preference: []
       },
       isCommon: this.props.usertype=='common',
-      verify:false,
+      verify:true,
+      disable:true,
+      validate:true,
     }
     this.handleFirstChange = this.handleFirstChange.bind(this);
     this.handleLastChange = this.handleLastChange.bind(this);
@@ -119,6 +126,7 @@ class Signup extends Component {
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handle_signup = this.handle_signup.bind(this);
     this.handlePreference = this.handlePreference.bind(this);
+    this.handleVerifyPassword = this.handleVerifyPassword.bind(this);
   }
   handleFirstChange(e){
     const user = {...this.state.user, "first_name":e.target.value};
@@ -143,9 +151,15 @@ class Signup extends Component {
 
   handleVerifyPassword(e){
     if(e.target.value===this.state.user.password){
-      this.setState({verify:true});
+      this.setState({
+        verify:true,
+        disable: false
+      });
     } else {
-      this.setState({ verify: false});
+      this.setState({
+        verify:false,
+        disable:true
+      });
 
     }
   }
@@ -167,49 +181,54 @@ class Signup extends Component {
     })
   }
   handle_signup() {
-
-    console.log(this.state.user);
-    axios.post("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/users/", this.state.user)
-      .then((json) => {
-        var is_restaurant = false;
-        var is_common = false;
-        if(this.state.user.usertype==='common'){
-          is_common = true;
-        } else if(this.state.user.usertype==='restaurant'){
-          is_restaurant = true;
-        }
-        const user={
-          username: this.state.user.username,
-          password: this.state.user.password,
-          is_restaurant: is_restaurant,
-          is_common: is_common
-        }
-        console.log(user);
-        axios.post("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/login/", user)
-        .then((res)=>{
-          localStorage.setItem('token', res.data.token);
-          localStorage.setItem('id', res.data.id);
-          console.log(this.props.usertype);
-          if(this.props.usertype==='common'){
-            window.location =`${process.env.PUBLIC_URL}/`;
-          } else {
-            window.location =`${process.env.PUBLIC_URL}/restaurant`;
+    console.log(this.state.verify)
+    if(this.state.verify){
+      axios.post("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/users/", this.state.user)
+        .then((json) => {
+          var is_restaurant = false;
+          var is_common = false;
+          if(this.state.user.usertype==='common'){
+            is_common = true;
+          } else if(this.state.user.usertype==='restaurant'){
+            is_restaurant = true;
           }
+          const user={
+            username: this.state.user.username,
+            password: this.state.user.password,
+            is_restaurant: is_restaurant,
+            is_common: is_common
+          }
+          console.log(user);
+          axios.post("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/login/", user)
+          .then((res)=>{
+            this.setState({
+              validate:false
+            })
+            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('id', res.data.id);
+            console.log(this.props.usertype);
+            if(this.props.usertype==='common'){
+              window.location =`${process.env.PUBLIC_URL}/`;
+            } else {
+              window.location =`${process.env.PUBLIC_URL}/restaurant`;
+            }
+          })
+          .catch((err)=>{
+            console.log(err);
+          })
+
         })
         .catch((err)=>{
           console.log(err);
+          this.setState({
+            validate:false
+          })
         })
-
-      })
-      .catch((err)=>{
-        console.log(err);
-      })
-
+      }
   }
 
   render(){
-    console.log(this.state.isCommon)
-
+    console.log(this.state.verify);
     const preference = ["american", "seafood", "steak", "fast", "bar", "finedining", "chinese",  "japanese", "korean", "mexican", "pizza", "breakfast", "noodle", "italian", "mediterranean","french","vegetarian"];
     let preferenceComp = [];
     preference.map((elem)=>{
@@ -254,7 +273,10 @@ class Signup extends Component {
             </Form.Group>
             <Form.Group controlId="formGroupPassword">
               <Form.Label>Re-type Password: </Form.Label>
-              <Form.Control type="password" placeholder="Re-enter Password *" />
+              <Form.Control type="password" placeholder="Re-enter Password *" onChange={this.handleVerifyPassword}/>
+              <Message negative hidden={this.state.verify}>
+                <p>The password you entered did not match</p>
+              </Message>
             </Form.Group>
             {
               this.state.isCommon?
@@ -265,9 +287,13 @@ class Signup extends Component {
               :null
             }
           </Form>
+          <Message negative hidden={this.state.validate}>
+            <Message.Header>The username/Email is invalid</Message.Header>
+            <p>Might becasue the email format is not correct, or username is already exist. Please check it again</p>
+          </Message>
         </Modal.Body>
         <Modal.Footer>
-          <Button inverted color='red' onClick={this.handle_signup}>Create Account</Button>
+          <Button disabled={this.state.disable} inverted color='red' onClick={this.handle_signup}>Create Account</Button>
         </Modal.Footer>
       </Modal>
     )
@@ -298,7 +324,6 @@ class InstantlerNav extends Component{
   }
 
   render(){
-    console.log(this.props.usertype);
     const loginShow = this.state.loginShow;
     const signupShow = this.state.signupShow;
     let signupClose = () => this.setState({ signupShow: false });

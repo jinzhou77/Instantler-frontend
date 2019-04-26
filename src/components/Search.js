@@ -24,9 +24,9 @@ const options = [
   { key: '10', text: '10 people', value: '10' },
 ]
 const cityOptions= [
-  { key: '1', text: 'Chicago', value: 'Chicago' },
-  { key: '2', text: 'New York', value: 'New York' },
-  { key: '3', text: 'Los Angeles', value: 'Los Angeles' },
+  { key: '1', text: 'Chicago, IL', value: 'Chicago' },
+  { key: '2', text: 'New York, NY', value: 'New York' },
+  { key: '3', text: 'Los Angeles, CA', value: 'Los Angeles' },
 ]
 
 
@@ -50,7 +50,7 @@ class Search extends Component{
 
   componentDidMount(){
     let allResults=[], popularResults=[];
-    axios.get('http://127.0.0.1:8000/api/restaurants/?city='+this.state.city)
+    axios.get('http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/restaurants/?city='+this.state.city)
     .then((res)=>{
       for(let i=0;i<res.data.length;i++){
         allResults.push(res.data[i]);
@@ -59,7 +59,7 @@ class Search extends Component{
         allResults
       })
     })
-    axios.get('http://127.0.0.1:8000/api/restaurants/?city='+this.state.city+'&popular=True')
+    axios.get('http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/restaurants/?city='+this.state.city+'&popular=True')
     .then((res)=>{
       for(let i=0;i<res.data.length;i++){
         popularResults.push(res.data[i]);
@@ -79,7 +79,7 @@ class Search extends Component{
               <Image src={ele.photo_url} size="medium"/>
               <Card.Content>
                 <Card.Header as="a" href={`/reservationPage/${ele.id}`}>{ele.name}</Card.Header>
-                <Card.Meta><Rating maxRating={5} rating={parseInt(ele.rating)}/> <b>{ele.ratings_count} reviews </b></Card.Meta>
+                <Card.Meta><Rating maxRating={5} disabled rating={parseInt(ele.rating)}/> <b>{ele.ratings_count} reviews </b></Card.Meta>
                 <Card.Description>
                   <b>Price Range: {ele.price}</b> <br />
                   <b>Phone Number: {ele.phone_num}</b> <br />
@@ -148,7 +148,7 @@ class Search extends Component{
             <Image src={ele.photo_url} size="medium"/>
             <Card.Content>
               <Card.Header as="a" href={`/reservationPage/${ele.id}`}>{ele.name}</Card.Header>
-              <Card.Meta><Rating maxRating={5} rating={parseInt(ele.rating)}/> <b>{ele.ratings_count} reviews </b></Card.Meta>
+              <Card.Meta><Rating maxRating={5} disabled rating={parseInt(ele.rating)}/> <b>{ele.ratings_count} reviews </b></Card.Meta>
               <Card.Description>
                 <b>Price Range: {ele.price}</b> <br />
                 <b>Phone Number: {ele.phone_num}</b> <br />
@@ -167,7 +167,7 @@ class Search extends Component{
 
   render(){
     const filterResult = this.state.filterResult;
-    const {popularResults, allResults, recommandList} = this.state;
+    const {popularResults, allResults, recommandList, city} = this.state;
     const value = this.state.value;
     let newFilterArr = [];
     for (let i = 0; i < filterResult.length; i++) {
@@ -209,7 +209,6 @@ class Search extends Component{
       )
     })
 
-    console.log(popularComponents.length)
     return(
       <div className="search-homepage">
         <div className="search-content">
@@ -238,13 +237,15 @@ class Search extends Component{
                   <Button size='lg' variant="danger"><Link to={{
                     pathname:'/search',
                     state: {
-                      list:allResults
+                      list:allResults,
+                      city:city
                     }
                   }}>Let's Go</Link></Button>:
                   <Button size='lg' variant="danger"><Link to={{
                     pathname:'/search',
                     state: {
-                      list:filterResult
+                      list:filterResult,
+                      city:city
                     }
                   }}>Let's Go</Link></Button>}
               </Col>

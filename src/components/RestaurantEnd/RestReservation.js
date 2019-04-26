@@ -7,6 +7,7 @@ import ReservationInfo from './ReservationInfo.js'
 import {Rating, Label, Message, Form, Image, Tab, Item} from 'semantic-ui-react'
 import {Button, ButtonToolbar, Modal} from 'react-bootstrap'
 import TableDataInfo from './TableDataInfo.js'
+import EditRest from './EditRest.js'
 const url='http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/';
 
 
@@ -135,64 +136,65 @@ console.log(categories)
       { menuItem: 'Current Table Type Info', render: () => <Tab.Pane><TableDataInfo dateTime={dateTime}/></Tab.Pane> },
     ]
     return (
-      <div className="reservationSys">
-        <h1>Reservation System</h1>
-        <div className="reservation">
+      <EditRest page={
+        <div className="reservationSys">
+          <h1>Reservation System</h1>
+          <div className="reservation">
 
-          <div className="reservation-selectDate">
-            <Item.Group>
-              <Item>
-                <Item.Image size="large" src={restaurant.photo_url} />
-                <Item.Content>
-                  <Item.Header>{restaurant.name}</Item.Header>
-                  <Item.Meta>
-                    <Rating maxRating={5} rating={parseInt(restaurant.rating)} icon='star' size='huge' disabled/> <br/>
-                  </Item.Meta>
-                  <Item.Description>
-                    {categories.map(i=>(
-                      <Label key={i}>
-                        {i}
-                      </Label>
-                    ))} <br/>
-                    <b>Address: {restaurant.address}</b> <br/>
-                    <b>City: {restaurant.city}</b> <br />
-                    <b>State: {restaurant.state}</b><br />
-                    <b>Price Range: {restaurant.price}</b><br />
-                  </Item.Description>
-                </Item.Content>
-              </Item>
-            </Item.Group>
-            <Calendar onChange={this.changeDate} value={dates} />
-          </div>
-          <div className="reservation-dateButtons">
-
-            <Message
-              positive
-              attached
-              header={`Selected Date: ${month}/${date}/${year}`}
-            />
-            <Form className="attached fluid segment">
-              <h3>Reservation time slots:</h3>
-              {timeRows.map(i=>{return i})}
-            </Form>
-            <Modal
-                show={this.state.show}
-                onHide={this.handleClose}
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered>
-              <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
-                  Current Reservation Info
-                </Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Tab panes={panes} />
-              </Modal.Body>
-            </Modal>
+            <div className="reservation-selectDate">
+              <Item.Group>
+                <Item>
+                  <Item.Image size="large" src={restaurant.photo_url} />
+                  <Item.Content>
+                    <Item.Header>{restaurant.name}</Item.Header>
+                    <Item.Meta>
+                      <Rating maxRating={5} rating={parseInt(restaurant.rating)} icon='star' size='huge' disabled/> <br/>
+                    </Item.Meta>
+                    <Item.Description>
+                      {categories.map(i=>(
+                        <Label key={i}>
+                          {i}
+                        </Label>
+                      ))} <br/>
+                      <b>Address: {restaurant.address}</b> <br/>
+                      <b>City: {restaurant.city}</b> <br />
+                      <b>State: {restaurant.state}</b><br />
+                      <b>Price Range: {restaurant.price}</b><br />
+                    </Item.Description>
+                  </Item.Content>
+                </Item>
+              </Item.Group>
+              <Calendar onChange={this.changeDate} value={dates} />
+            </div>
+            <div className="reservation-dateButtons">
+              <Message
+                positive
+                attached
+                header={`Selected Date: ${month}/${date}/${year}`}
+              />
+              <Form className="attached fluid segment">
+                <h3>Reservation time slots:</h3>
+                {timeRows.map(i=>{return i})}
+              </Form>
+              <Modal
+                  show={this.state.show}
+                  onHide={this.handleClose}
+                  size="lg"
+                  aria-labelledby="contained-modal-title-vcenter"
+                  centered>
+                <Modal.Header closeButton>
+                  <Modal.Title id="contained-modal-title-vcenter">
+                    Current Reservation Info
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Tab panes={panes} />
+                </Modal.Body>
+              </Modal>
+            </div>
           </div>
         </div>
-      </div>
+      } />
     )
   }
 }

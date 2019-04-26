@@ -76,15 +76,13 @@ class RestaurantAccount extends Component {
   }
   updateUserInfo(){
     const {user} = this.state;
-    console.log(user);
     axios.put(url+"/api/users/"+localStorage.getItem("id")+"/", this.state.user, {
       headers: {
         Authorization: 'Token '+localStorage.getItem('token')
       }}).then((res)=>{
-        console.log(res);
         window.location =`${process.env.PUBLIC_URL}/userInfo`;
       }).catch((err)=>{
-        console.log(err);
+        console.log(err)
       })
   }
 
@@ -189,12 +187,10 @@ class EditUserInfo extends Component {
   }
   updateUserInfo(){
     const {user} = this.state;
-    console.log(user);
     axios.put(url+"/api/users/"+localStorage.getItem("id")+"/", this.state.user, {
       headers: {
         Authorization: 'Token '+localStorage.getItem('token')
       }}).then((res)=>{
-        console.log(res);
         window.location =`${process.env.PUBLIC_URL}/userInfo`;
       }).catch((err)=>{
         console.log(err);
@@ -202,7 +198,6 @@ class EditUserInfo extends Component {
   }
   render(){
     const user = this.props.user
-    console.log(this.state.user);
 
     return (
       <Form>
@@ -237,7 +232,6 @@ class UpcomingEvent extends Component {
   }
   render(){
     const {reservationExist, reservationList} = this.state
-    console.log(this.props.upcoming)
     return (
       <div className="upcomingEvent">
         <h3>Upcoming Reservation of today</h3>
@@ -263,8 +257,6 @@ class PastEvent extends Component {
     this.rateActivate = this.rateActivate.bind(this);
   }
   rateActivate(event,data){
-    console.log(event);
-    console.log(data);
     var info ={
       restaurant:data.restid,
       user:localStorage.getItem('id'),
@@ -285,23 +277,26 @@ class PastEvent extends Component {
     var pastCom=[];
     axios.get(url+"/api/review/?user="+localStorage.getItem("id"))
     .then((res)=>{
-        console.log(res.data)
         for(let i = 0; i<res.data.length; i ++){
           axios.get(url+"/api/restaurants/"+res.data[i].restaurant+"/")
           .then((response) => {
             pastCom.push(
               <List.Item>
                 <List.Content >
-                  <List.Header>{response.data.name}</List.Header>
+                  <List.Header>Restaurant Name: {response.data.name}</List.Header>
                   <List.Description>Address:{response.data.address}</List.Description>
                   <List.Description>City:{response.data.city}</List.Description>
+                </List.Content>
+                <List.Content >
+                  <List.Header>Phone:{response.data.phone_num}</List.Header>
+                  <List.Description>Price:{response.data.price}</List.Description>
                 </List.Content>
                 <List.Content className="content2">
                   {res.data[i].rated?
                     <List.Description><Rating maxRating={5} restid={res.data[i].restaurant} disabled rating={res.data[i].rating}/></List.Description>
                     :
                     <Popup
-                      trigger={<Button>Rate the restaurant</Button>}
+                      trigger={<Button color="google plus">Rate</Button>}
                       content={<Rating value={res.data[i].id} restid={res.data[i].restaurant} onRate={this.rateActivate} maxRating={5}/>}
                       on="click"
                       hideOnScroll
@@ -318,9 +313,7 @@ class PastEvent extends Component {
     })
   }
   render(){
-    console.log(this.state.pastEvent);
     const {pastEvent} = this.state;
-    console.log( )
     return (
       <div className="passEvent">
         <h3>Past Reservation</h3>
@@ -379,11 +372,15 @@ class CommonAccount extends Component {
                   Restaurant Name: {res1.data.name}
                 </List.Header>
                 <List.Description>
-                  Address: {res1.data.address}, {res1.data.city}, {res1.data.state}
+                  Address1: {res1.data.address}
                 </List.Description>
                 <List.Description>
-                  Time: {tempEvent[i].dateTime.slice(12,20)}
+                  Address2: {res1.data.city}, {res1.data.state}
                 </List.Description>
+              </List.Content>
+              <List.Content>
+                <List.Header>Reservation Time: {tempEvent[i].dateTime.slice(11,19)}</List.Header>
+                <List.Description>Phone Number: {res1.data.phone_num}</List.Description>
               </List.Content>
               <List.Content>
                 <List.Header>
@@ -471,8 +468,6 @@ class UserInfo extends Component {
         <Image avatar src="../assets/user.jpg"/>   {user.first_name}
       </span>
     )
-    console.log(user);
-    console.log(isRestaurant);
     return (
       <>
         {isRestaurant?

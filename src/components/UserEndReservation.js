@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios'
-import {Header, Rating,Label,Button,Message, Image, Item, Container} from 'semantic-ui-react'
+import {Header, Rating,Label,Button,Message, Image, Item, Container, Popup} from 'semantic-ui-react'
 import '../styles/UserEndReservation.css'
 import UserNavBar from './UserEnd/UserNavBar.js'
 import Calendar from 'react-calendar';
@@ -41,7 +41,8 @@ class UserEndReservation extends Component {
       selectedTableName:'',
       MaxNum:0,
       guestNum:0,
-      servedNumber:0
+      servedNumber:0,
+      availableReservation:[]
     }
     this.changeDate = this.changeDate.bind(this);
     this.handleShow = this.handleShow.bind(this);
@@ -114,31 +115,55 @@ class UserEndReservation extends Component {
       restaurant: this.state.restId,
       first_name:this.state.first_name
     }
-    axios.post(url+"/api/waiting-user/", info)
-    .then((res)=>{
-      localStorage.setItem("WaitNumber", res.data.myNumber);
-      window.location =`${process.env.PUBLIC_URL}/reservationPage/${this.state.restId}`
+    console.log(info);
+    if(localStorage.getItem("id")){
+      axios.post(url+"/api/waiting-user/", info)
+      .then((res)=>{
+        localStorage.setItem("WaitNumber", res.data.myNumber);
+        window.location =`${process.env.PUBLIC_URL}/reservationPage/${this.state.restId}`
 
-    }).catch((err)=>{
-      console.log(err);
-    })
+      }).catch((err)=>{
+        console.log(err);
+      })
+    } else {
+      alert("Please Log in First to take a number!")
+    }
+
   }
   selectTableType(e){
+    console.log(e.target.value);
+
+    const {date,year,month} = this.state;
+    var selectedDate  =`${year}-${month}-${date}`;
     axios.get(url+`/api/table-type/${e.target.value}/`)
     .then((res)=>{
-      this.setState({
-        selectedTableTypeID:res.data.id,
-        MaxNum:res.data.supportedNum,
+      axios.get(url+'/api/table-data?restaurant='+ this.state.restId+'&tabletype='+res.data.id+"&date="+selectedDate)
+      .then((response)=>{
+        let timeButton = [];
+        var resData = response.data;
+        for(let i=0;i<resData.length;i++){
+              timeButton.push(
+                <Button color="google plus" key={resData[i].dateTime.slice(11, 19)} value={resData[i].dateTime.slice(11, 19)} size="medium" onClick={this.handleShow}>
+                  {resData[i].dateTime.slice(11, 19)}
+                </Button>
+              )
+        }
+        this.setState({
+          availableReservation:timeButton,
+          selectedTableTypeID:res.data.id,
+          MaxNum:res.data.supportedNum
+        })
       })
-    })
-
+    }).catch((err)=>{this.setState({selectedTableTypeID:0})})
   }
   handleShow(e){
+    console.log('e.target.value')
     const {date,year,month} = this.state;
 
-    let  dateFormat = `${year}-${month}-${date}T${e.target.value}:00Z`;
+    let  dateFormat = `${year}-${month}-${date}T${e.target.value}Z`;
+    console.log(dateFormat);
     this.setState({
-      dateFormat: `${date}/${month}/${year} at ${e.target.value}`,
+      dateFormat: `${month}/${date}/${year} at ${e.target.value}`,
       dateFormatInAPI: dateFormat
     })
     axios.get(url+`/api/table-data?restaurant=${this.state.restId}&tabletype=${this.state.selectedTableTypeID}&datetime=${dateFormat}`)
@@ -146,25 +171,19 @@ class UserEndReservation extends Component {
       console.log(res.data)
       const data = res.data;
       console.log(data);
-      if(data.length==0){
+
+      if(res.data[0].remainNum==0){
         this.setState({
-          alertShow:true
+          alertShow:true,
+          modalShow:false
         })
-      } else {
-        if(res.data[0].remainNum==0){
-          this.setState({
-            alertShow:true,
-            modalShow:false
-          })
 
-        } else{
-          this.setState({
-            alertShow:false,
-            modalShow:true
-          })
-        }
+      } else{
+        this.setState({
+          alertShow:false,
+          modalShow:true
+        })
       }
-
     })
   }
   handleAlertClose(){
@@ -231,30 +250,17 @@ class UserEndReservation extends Component {
 
   }
   render(){
-    const {restInfo,restCate,dates, month, date, year, existTableType, selectedTableTypeID, MaxNum,alertShow,modalShow} = this.state;
-    console.log(alertShow);
-    console.log(modalShow);
+    const {restInfo,restCate,dates, month, date, year, existTableType, selectedTableTypeID, MaxNum,alertShow,modalShow, availableReservation} = this.state;
     let timeButton = [];
-    for(let i=8;i<=24;i++){
-      if(i<10){
-        timeButton.push(
-          <Button key={`0${i}:00`} value={`0${i}:00`} size="medium" onClick={this.handleShow}>{`0${i}:00:00`}</Button>
-        );
-        timeButton.push(
-          <Button key={`0${i}:30`} value={`0${i}:30`} size="medium"  onClick={this.handleShow}>{`0${i}:30:00`}</Button>
-        );
-      } else {
-        timeButton.push(
-          <Button key={`${i}:00`} value={`${i}:00`} size="medium"   onClick={this.handleShow}>{i}:00:00</Button>
-        );
-        if(i<24){
-          timeButton.push(
-            <Button key={`0${i}:30`} value={`${i}:30`} size="medium"  onClick={this.handleShow}>{i}:30:00</Button>
-          )
-        }
-      }
+    console.log(selectedTableTypeID);
+    if(selectedTableTypeID==0){
+      timeButton.push(<h1 key="wrong selection">Please select the table type you want first!</h1>)
+    } else if(selectedTableTypeID!=0 && availableReservation.length==0){
+      timeButton.push(<h1 key="Not found">No Reservation available for this table kind</h1>)
+    } else {
+      timeButton = [...availableReservation];
     }
-
+    console.log(availableReservation);
     let i=0,timeColumns=[], timeRows=[];
     while(i<timeButton.length){
       for(let j=0;j<11;j++){
@@ -269,13 +275,11 @@ class UserEndReservation extends Component {
       timeColumns =[];
     }
     let guestNumList = [];
-    console.log(MaxNum);
     for( let i=1;i<=MaxNum;i++){
       guestNumList.push(
-        <option value={i}>{i}</option>
+        <option key={i} value={i}>{i}</option>
       )
     }
-    console.log()
     return(
       <div className="UserEndReservation">
         <UserNavBar />
@@ -303,7 +307,7 @@ class UserEndReservation extends Component {
                       Current Serving Number:<b>{this.state.servingNumber}</b>
                     </Message.Content>
                   </Message>
-                  <Button fluid onClick={this.takeNumber}>Take A Number</Button>
+                  <Button fluid onClick={this.takeNumber}  color='google plus'>Take A Number</Button>
                 </Item.Extra>
               </Item.Content>
             </Item>
@@ -313,7 +317,7 @@ class UserEndReservation extends Component {
         <div className="UserEndReservationSelectTime">
           <Form>
             <Form.Group>
-              <Form.Label>Select the table type:</Form.Label>
+              <Form.Label><b>Select the table type:</b></Form.Label>
               <Form.Control as="select" onChange={this.selectTableType}>
                 <option>Choose ...</option>
                 {existTableType.map((i)=>{return i})}
@@ -366,7 +370,7 @@ class UserEndReservation extends Component {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.confirm}>Confirm</Button>
+            <Button onClick={this.confirm} color="google plus">Confirm</Button>
           </Modal.Footer>
         </Modal>
 
@@ -383,7 +387,7 @@ class UserEndReservation extends Component {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <p>There are no tables for this time slot.</p>
+              <p>There are no more tables for this time slot.</p>
             </Modal.Body>
           </Modal>
       </div>

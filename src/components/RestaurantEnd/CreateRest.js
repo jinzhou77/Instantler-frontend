@@ -68,17 +68,19 @@ class CreateRest extends Component { // if the user have existing restaurant, di
       })
     }
     handleCityChange(e){
-      const restaurant = {...this.state.restaurant, "city":e.target.value};
+      let restaurant;
+      if(e.target.value=='Chicago, IL'){
+        restaurant = {...this.state.restaurant, "city":"Chicago", "state":"IL"};
+      } else if(e.target.value=="New York, NY"){
+         restaurant = {...this.state.restaurant, "city":"New York", "state":"NY"};
+      } else if(e.target.value=="Los Angeles, CA"){
+         restaurant = {...this.state.restaurant, "city":"Los Angeles", "state":"CA"};
+      }
       this.setState({
         restaurant
       })
     }
-    handleStateChange(e){
-      const restaurant = {...this.state.restaurant, "state":e.target.value};
-      this.setState({
-        restaurant
-      })
-    }
+
     handlePriceChange(e){
       const restaurant = {...this.state.restaurant, "price":e.target.value};
       this.setState({
@@ -157,20 +159,12 @@ class CreateRest extends Component { // if the user have existing restaurant, di
                           <Form.Label>Restaurant City</Form.Label>
                           <Form.Control as="select" onChange={this.handleCityChange}>
                               <option>Choose...</option>
-                              <option>Chicago</option>
-                              <option>Los Angeles</option>
-                              <option>New York City</option>
+                              <option>Chicago, IL</option>
+                              <option>Los Angeles, CA</option>
+                              <option>New York, NY</option>
                           </Form.Control>
                       </Form.Group>
-                      <Form.Group as={Col} controlId="formGridRestState">
-                          <Form.Label>Restaurant State</Form.Label>
-                          <Form.Control as="select" onChange={this.handleStateChange}>
-                              <option>Choose...</option>
-                              <option>IL</option>
-                              <option>CA</option>
-                              <option>NY</option>
-                          </Form.Control>
-                      </Form.Group>
+
                       <Form.Group as={Col} controlId="formGridPrice">
                           <Form.Label>Restaurant Price Range</Form.Label>
                           <Form.Control onChange={this.handlePriceChange} as="select">

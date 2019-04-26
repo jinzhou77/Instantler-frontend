@@ -11,13 +11,11 @@ class RestInfo extends Component {
     this.state={
       restaurant:{
       },
-      visible:false,
       categories:[],
       show:false
     }
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.toggleVisibility=this.toggleVisibility.bind(this);
     this.handleUpdateCategories = this.handleUpdateCategories.bind(this);
     this.postCategories = this.postCategories.bind(this);
   }
@@ -60,13 +58,14 @@ class RestInfo extends Component {
     })
   }
   componentDidMount(){
-    axios.get("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/restaurants/"+this.props.restId)
+    axios.get("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/restaurants/"+localStorage.getItem("restId")+"/")
     .then((res)=>{
+        console.log(res.data);
         this.setState({
           restaurant:res.data
         })
 
-      axios.get("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/restaurants-cat/"+this.props.restId)
+      axios.get("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/restaurants-cat/"+localStorage.getItem("restId")+"/")
       .then((response)=>{
         this.setState({
           categories:response.data.categories
@@ -77,16 +76,11 @@ class RestInfo extends Component {
       console.log(err);
     })
   }
-  toggleVisibility(){
-    this.setState({
-      visible:!this.state.visible
-    })
-  }
+
   render(){
 
     const {restaurant,categories, visible} = this.state;
     var categoriesType = ["american", "seafood", "steak", "fast", "bar", "finedining", "chinese",  "japanese", "korean", "mexican", "pizza", "breakfast", "noodle", "italian", "mediterranean","french","vegetarian"];
-    console.log(restaurant);
     let categoriesList = [];
     for(let i=0;i<categories.length;i++){
       categoriesList.push(
@@ -106,9 +100,9 @@ class RestInfo extends Component {
             <Rating disabled maxRating={5} rating={parseInt(restaurant.rating)} icon='star' size='huge' />
             <span>{restaurant.ratings_count} reviews</span>
           </div>
+
           <div className="editableInfo">
 
-            <span><b>Price Range: {restaurant.price}</b></span><br />
 
             {categoriesList.map(i=>{return i})}
 
@@ -136,27 +130,23 @@ class RestInfo extends Component {
             </Modal.Footer>
           </Modal>
           </div>
-          <Card>
-            <Image src={restaurant.photo_url}/>
-            <Card.Content>
-              <Card.Header>
-                {restaurant.name}
-              </Card.Header>
-              <Card.Description>Address Line 1: {restaurant.address}</Card.Description>
-              <Card.Description>Address Line 2:{restaurant.city}, {restaurant.state}</Card.Description>
-              <Card.Description>Phone Number: {restaurant.phone_num}</Card.Description>
-            </Card.Content>
-            <Card.Content extra>
-                <Button fluid basic color='green' onClick={this.toggleVisibility}>
-                  Update
-                </Button>
-            </Card.Content>
-          </Card>
+          <div className="update-separate">
+            <Card>
+              <Image src={restaurant.photo_url}/>
+              <Card.Content>
+                <Card.Header>
+                  {restaurant.name}
+                </Card.Header>
+                <Card.Meta>Price Range:{restaurant.price}</Card.Meta>
+                <Card.Description>Address Line 1: {restaurant.address}</Card.Description>
+                <Card.Description>Address Line 2: {restaurant.city}, {restaurant.state}</Card.Description>
+                <Card.Description>Phone Number: {restaurant.phone_num}</Card.Description>
+
+              </Card.Content>
+            </Card>
+            <UpdateRestInfo restaurant={this.state.restaurant}/>
+          </div>
         </div>
-        <Transition visible={visible} animation="fade" duration={500}>
-          <UpdateRestInfo restaurant={restaurant}/>
-        </Transition>
-        <Divider />
       </div>
     )
   }
