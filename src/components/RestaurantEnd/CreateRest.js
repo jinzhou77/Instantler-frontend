@@ -11,6 +11,7 @@ import {Input, Button} from 'semantic-ui-react'
 import '../../styles/createRes.css';
 import axios from 'axios'
 import RestInfo from './RestInfo.js'
+const url = "http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/"
 class CreateRest extends Component { // if the user have existing restaurant, display the restaurant info, otherwise, allow user to create new restaurant
     constructor(props){
       super(props);
@@ -100,9 +101,8 @@ class CreateRest extends Component { // if the user have existing restaurant, di
     }
     createNewRest(){
 
-      axios.post("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/restaurants/ ", this.state.restaurant)
+      axios.post(url+"restaurants/ ", this.state.restaurant)
       .then((res)=>{
-        console.log(res.data);
         localStorage.setItem('restId', res.data.id);
         window.location =`${process.env.PUBLIC_URL}/restaurant`;
         var init_waitList = {
@@ -110,9 +110,11 @@ class CreateRest extends Component { // if the user have existing restaurant, di
           waitingNumber: 0,
           servedNumber : 0
         }
-        axios.post("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/wsnumber/", init_waitList)
+        axios.post(url+"wsnumber/", init_waitList)
         .then((res)=>{
           console.log(res);
+        }).catch((err)=>{
+          console.log(err);
         })
       })
       .catch((err)=>{
