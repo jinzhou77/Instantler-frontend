@@ -4,6 +4,7 @@ import axios from 'axios'
 import {Rating, List, Card, Image, Button, Transition, Divider, Label} from 'semantic-ui-react'
 import {Modal, Form} from 'react-bootstrap'
 import UpdateRestInfo from './UpdateRestInfo.js'
+import CreateRest from './CreateRest.js'
 const url="http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/";
 class RestInfo extends Component {
   constructor(props){
@@ -58,23 +59,37 @@ class RestInfo extends Component {
     })
   }
   componentDidMount(){
-    axios.get("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/restaurants/"+localStorage.getItem("restId")+"/")
+    axios.get("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/users/"+localStorage.getItem("id")+"/?format=json", {
+      headers: {
+        Authorization: 'Token '+localStorage.getItem('token')
+      }
+    })
     .then((res)=>{
-        console.log(res.data);
-        this.setState({
-          restaurant:res.data
-        })
+      this.setState({
+        restId: res.data.restaurant
+      })
+      axios.get("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/restaurants/"+res.data.restaurant+"/")
+      .then((res1)=>{
+          this.setState({
+            restaurant:res1.data
+          })
 
-      axios.get("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/restaurants-cat/"+localStorage.getItem("restId")+"/")
-      .then((response)=>{
-        this.setState({
-          categories:response.data.categories
+        axios.get("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/restaurants-cat/"+res.data.restaurant+"/")
+        .then((response)=>{
+          this.setState({
+            categories:response.data.categories
+          })
         })
+      })
+      .catch((err)=>{
+        console.log(err);
       })
     })
     .catch((err)=>{
       console.log(err);
     })
+
+
   }
 
   render(){
@@ -92,8 +107,10 @@ class RestInfo extends Component {
         <Label key='not found'>No Categories Found</Label>
       );
     }
+    let exist=localStorage.getItem("restId")!=0;
     return(
       <div className="restInfo">
+      {exist?
         <div className="generalInfo">
           <h1>{restaurant.name}</h1>
           <div className="nums_rating">
@@ -147,6 +164,9 @@ class RestInfo extends Component {
             <UpdateRestInfo restaurant={this.state.restaurant}/>
           </div>
         </div>
+        :
+        <CreateRest />
+      }
       </div>
     )
   }

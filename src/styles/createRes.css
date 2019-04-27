@@ -1,7 +1,7 @@
-/*.createRes form, .createRes button{
-  width:80%;
-  margin:auto;
-}*/
+.createRes form, .createRes button{
+  width:80% !important;
+  margin:auto !important;
+}
 .createRes form h1{
   font-size:4em;
   text-align:center;
@@ -18,6 +18,10 @@
   padding-right:0!important;
   padding-left:0!important;
 }
+.restInfo{
+  width:90%;
+  margin:auto;
+}
 .restInfo .nums_rating{
   height:20px;
   font-size:100%;
@@ -29,7 +33,7 @@
   font-size:16px;
 }
 
-.restInfo{
+.update-separate{
   display:flex;
   justify-content: space-between;
 }
@@ -37,9 +41,13 @@
   margin-right:20px;
   font-size:16px;
 }
-.generalInfo,.updateRestInfo{
-  width:90%;
+.nums_rating{
+  margin-bottom:10px;
+}
+.editableInfo{
+  /*margin-top:20px;*/
+  margin-bottom:10px;
 }
 .editableInfo button{
-  margin-left:10px;
+  margin-left:10px !important;
 }

@@ -1,5 +1,5 @@
 .reservationSys{
-  width:95%;
+  width:90%;
   margin:auto;
 }
 .restWaitList{
@@ -9,19 +9,24 @@
 .react-calendar{
   margin-top:10px;
 }
-.reservation{
-  display:flex;
-  justify-content: space-between;
-}
-.reservation-selectDate{
-  width:70%;
-}
-.reservation-selectDate .item{
+
+.reservation-selectDate .items{
   padding-left:0!important;
   padding-bottom:0!important;
 }
- .reservation-dateButtons{
-  width:50%;
+.reservation-selectDate .item{
+  width:65%;
+}
+.reservation-selectDate{
+  height:300px;
+  display:flex;
+  justify-content: space-between;
+}
+.reservation-selectDate .item{
+  padding:0 !important;
+}
+.reservation-dateButtons{
+  margin-top:20px;
 
 }
 .reservation-dateButtons .buttonRows{

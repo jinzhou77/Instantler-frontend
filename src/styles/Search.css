@@ -51,8 +51,18 @@
 .filterbar{
   background-color:#f5f5f5;
 }
+.filterbar p{
+  margin-bottom:0;
+}
 .filterbar-center{
   display:flex;
-  justify-content: space-around;
-  padding:20px; 
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.filterbar2-center{
+  width:90%;
+  margin:auto;
+}
+.recommandSwitch,.popularSwitch{
+  margin:0 !important;
 }

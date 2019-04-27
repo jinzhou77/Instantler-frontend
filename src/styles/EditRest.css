@@ -21,18 +21,24 @@
   padding-top:20px;
   padding-bottom:20px;
 }
-.updateRestInfo{
-  margin:auto;
-}
 .userHome nav, .commonAccount nav, .UserEndReservation nav{
   background-color:#dc3545 !important;
 }
-/*nav{
-  color:white!important;
-  height:100px;
-  display:flex;
-  align-items: center;
-}*/
+.filterbar{
+  padding-top:30px;
+  padding-bottom:30px;
+}
+.filterbar-center{
+  width:90%;
+  margin:auto;
+}
+.updateRestInfo{
+  width:70%;
+}
+.editTableType{
+  width:90%;
+  margin:auto;
+}
 .navbar-brand, .userHome .navbar-brand,.instantlerNav .navbar-brand ,.editRest nav .navbar-brand, .restHome .instantlerNav .navbar-brand, .restaurantAccount .navbar-brand{
   color:white !important;
   font-size:23px;

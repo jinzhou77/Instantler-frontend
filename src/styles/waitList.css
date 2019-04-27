@@ -1,12 +1,12 @@
 .restWSnum{
-  width:70%;
+  width:50%;
 }
 .waitListHeader{
   display:flex;
   justify-content: space-between;
 }
 .resList{
-  width:30%;
+  width:45%;
 }
 .resList .item{
   display:flex!important;

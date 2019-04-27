@@ -137,7 +137,7 @@ class RestWaitList extends Component{
             <div className="restWSnum">
               <Item.Group>
                 <Item>
-                  <Item.Image size="large" src={restaurant.photo_url} />
+                  <Item.Image size="medium" src={restaurant.photo_url} />
                   <Item.Content>
                     <Item.Header>{restaurant.name}</Item.Header>
                     <Item.Meta>

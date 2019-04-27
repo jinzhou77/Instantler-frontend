@@ -15,8 +15,8 @@ class CreateRest extends Component { // if the user have existing restaurant, di
     constructor(props){
       super(props);
       this.state={
-        restExist: this.props.restId!=0,
-        restId:this.props.restId,
+        restExist: 0,
+        restId:0,
         restaurant:{
           user:localStorage.getItem('id'),
           address:"",
@@ -32,7 +32,6 @@ class CreateRest extends Component { // if the user have existing restaurant, di
       this.handleRestNameChange = this.handleRestNameChange.bind(this);
       this.handleAddressChange = this.handleAddressChange.bind(this);
       this.handleCityChange = this.handleCityChange.bind(this);
-      this.handleStateChange = this.handleStateChange.bind(this);
       this.handlePriceChange = this.handlePriceChange.bind(this);
       this.handlePhotoURLChange = this.handlePhotoURLChange.bind(this);
       this.handlePhoneChange = this.handlePhoneChange.bind(this);

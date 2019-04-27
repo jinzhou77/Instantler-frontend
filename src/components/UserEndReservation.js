@@ -259,6 +259,10 @@ class UserEndReservation extends Component {
       timeButton.push(<h1 key="Not found">No Reservation available for this table kind</h1>)
     } else {
       timeButton = [...availableReservation];
+      // for(let i=availableReservation-1;i>=0;i--){
+      //   timeButton.push(availableReservation[i])
+      // }
+      // timeButton = timeButton.reverse();
     }
     console.log(availableReservation);
     let i=0,timeColumns=[], timeRows=[];
@@ -306,6 +310,17 @@ class UserEndReservation extends Component {
                     <Message.Content>
                       Current Serving Number:<b>{this.state.servingNumber}</b>
                     </Message.Content>
+                  </Message>
+                  <Message as="div" positive>
+                    <Message.Content>
+                      Your Number is :<b>{localStorage.getItem("WaitNumber")?localStorage.getItem("WaitNumber"):"None"}</b>
+                    </Message.Content>
+                    {localStorage.getItem("WaitNumber")-this.state.servingNumber==0?
+                      <Message.Content>
+                        <b>It is Your Turn!!!!!</b>
+                      </Message.Content>
+                      :null
+                    }
                   </Message>
                   <Button fluid onClick={this.takeNumber}  color='google plus'>Take A Number</Button>
                 </Item.Extra>

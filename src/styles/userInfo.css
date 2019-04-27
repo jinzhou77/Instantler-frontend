@@ -13,9 +13,7 @@
 .passEvent .content{
   width:90%!important;
 }
-.passEvent .content2{
-  width:7%!important;
-}
+
 .passEvent .item{
   display:flex !important;
   justify-content: space-between !important;
