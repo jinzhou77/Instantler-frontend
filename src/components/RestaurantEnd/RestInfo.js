@@ -107,7 +107,7 @@ class RestInfo extends Component {
         <Label key='not found'>No Categories Found</Label>
       );
     }
-    let exist=localStorage.getItem("restId")!=0;
+    let exist=this.state.restId!=0;
     return(
       <div className="restInfo">
       {exist?

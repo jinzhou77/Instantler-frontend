@@ -202,7 +202,7 @@ class Signup extends Component {
           axios.post("http://django-env.zjepgtqmt4.us-west-2.elasticbeanstalk.com/api/login/", user)
           .then((res)=>{
             this.setState({
-              validate:false
+              validate:true
             })
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('id', res.data.id);
@@ -287,10 +287,12 @@ class Signup extends Component {
               :null
             }
           </Form>
-          <Message negative hidden={this.state.validate}>
-            <Message.Header>The username/Email is invalid</Message.Header>
-            <p>Might becasue the email format is not correct, or username is already exist. Please check it again</p>
-          </Message>
+          {this.state.validate?null:
+            <Message negative hidden={this.state.validate}>
+              <Message.Header>The username/Email is invalid</Message.Header>
+              <p>Might becasue the email format is not correct, or username is already exist. Please check it again</p>
+            </Message>
+          }
         </Modal.Body>
         <Modal.Footer>
           <Button disabled={this.state.disable} inverted color='red' onClick={this.handle_signup}>Create Account</Button>

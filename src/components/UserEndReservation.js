@@ -315,7 +315,7 @@ class UserEndReservation extends Component {
                     <Message.Content>
                       Your Number is :<b>{localStorage.getItem("WaitNumber")?localStorage.getItem("WaitNumber"):"None"}</b>
                     </Message.Content>
-                    {localStorage.getItem("WaitNumber")-this.state.servingNumber==0?
+                    {localStorage.getItem("WaitNumber")&&(localStorage.getItem("WaitNumber")-this.state.servingNumber==0) ?
                       <Message.Content>
                         <b>It is Your Turn!!!!!</b>
                       </Message.Content>
